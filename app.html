@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D形状生成アプリ</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <!-- 
+    メインアプリケーションHTML
+    - 画面を上下2分割
+    - 上半分: 2行の表入力エリア
+    - 下半分: 3D形状表示エリア
+  -->
+  
+  <div id="app-container">
+    <!-- 上半分: 入力エリア -->
+    <div id="input-section" class="section">
+      <h2>データ入力</h2>
+      <div id="table-controls">
+        <!-- Up/Stay/Down、Reset/Check/Resumeボタン -->
+      </div>
+      <div id="table-container">
+        <!-- 2行の表が動的に生成される -->
+      </div>
+    </div>
+
+    <!-- 下半分: 表示エリア -->
+    <div id="display-section" class="section">
+      <div class="display-grid">
+        <!-- 左側: 2D点群表示 -->
+        <div class="display-panel">
+          <h3>2D点群</h3>
+          <canvas id="canvas2d" width="600" height="500"></canvas>
+        </div>
+        
+        <!-- 右側: 3D形状表示 -->
+        <div class="display-panel">
+          <h3>3D形状</h3>
+          <canvas id="canvas3d" width="600" height="500"></canvas>
+          <div class="control-hint">
+            🖱️ ドラッグ: 回転 | ホイール: ズーム
+          </div>
+        </div>
+      </div>
+      
+      <div id="info-panel">
+        <!-- 点群情報、統計情報の表示 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScriptモジュールの読み込み -->
+  <script src="modules/tableManager.js"></script>
+  <script src="modules/pointCalculator.js"></script>
+  <script src="modules/point2DRenderer.js"></script>
+  <script src="modules/shape3DRenderer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
