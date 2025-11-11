@@ -18,6 +18,8 @@ body {
   color: #333;
   overflow-y: auto;
   overflow-x: hidden;
+  touch-action: manipulation; /* ダブルタップズームを無効化 */
+  -webkit-tap-highlight-color: transparent; /* タップ時のハイライトを無効化 */
 }
 
 /* アプリケーションコンテナ - 縦スクロール対応 */
@@ -286,6 +288,7 @@ body {
   border-collapse: collapse;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   background-color: white;
+  touch-action: pan-x; /* 横スクロールのみ許可、ダブルタップズーム無効 */
 }
 
 .data-table th,
@@ -323,10 +326,18 @@ body {
   font-style: italic;
 }
 
+/* 表ラッパー（横スクロール用） */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
 /* 生成ボタンコンテナ */
 .generate-button-container {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -528,6 +539,8 @@ button {
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s;
+  touch-action: manipulation; /* ダブルタップズーム無効化 */
+  -webkit-tap-highlight-color: transparent; /* タップハイライト無効化 */
 }
 
 button:hover {

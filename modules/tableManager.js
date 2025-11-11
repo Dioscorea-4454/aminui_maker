@@ -235,7 +235,8 @@ class TableManager {
       return;
     }
     
-    let html = '<table class="data-table">';
+    let html = '<div class="table-wrapper">';
+    html += '<table class="data-table">';
     
     // 1行目：インデックス
     html += '<tr class="index-row">';
@@ -252,15 +253,19 @@ class TableManager {
     html += '</tr>';
     
     html += '</table>';
-    
-    // 生成ボタンとエクスポート/インポートボタンを追加
-    html += '<div class="generate-button-container">';
-    html += '<button id="generateBtn" class="generate-btn">🎯 点群を生成</button>';
-    html += '<button id="exportBtn" class="io-btn export-btn">📤 出力</button>';
-    html += '<button id="importBtn" class="io-btn import-btn">📥 読み込み</button>';
-    html += '</div>';
+    html += '</div>'; // table-wrapper終了
     
     this.container.innerHTML = html;
+    
+    // ボタンコンテナを表の後に追加
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'generate-button-container';
+    buttonContainer.innerHTML = `
+      <button id="generateBtn" class="generate-btn">🎯 点群を生成</button>
+      <button id="exportBtn" class="io-btn export-btn">📤 出力</button>
+      <button id="importBtn" class="io-btn import-btn">📥 読み込み</button>
+    `;
+    this.container.appendChild(buttonContainer);
     
     // 生成ボタンのイベントリスナーを登録
     const generateBtn = document.getElementById('generateBtn');
