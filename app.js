@@ -51,6 +51,9 @@ function initApp() {
   // 6. 3D描画モジュールの初期化
   shape3DRenderer = new Shape3DRenderer('canvas3d');
   
+  // 7. エクスポート/インポートモーダルの初期化
+  initModals();
+  
   console.log('アプリケーション初期化完了');
 }
 
@@ -143,6 +146,93 @@ function updateInfoPanel(stats, shape3D) {
 function onTableDataChanged(newData) {
   console.log('表データが変更されました:', newData);
   updatePipeline();
+}
+
+/**
+ * モーダルダイアログの初期化
+ */
+function initModals() {
+  const exportModal = document.getElementById('exportModal');
+  const importModal = document.getElementById('importModal');
+  const exportTextarea = document.getElementById('exportTextarea');
+  const importTextarea = document.getElementById('importTextarea');
+  
+  // エクスポートボタンのイベント委譲（動的に生成されるため）
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'exportBtn') {
+      handleExport();
+    } else if (e.target && e.target.id === 'importBtn') {
+      handleImportOpen();
+    }
+  });
+  
+  // エクスポートモーダルのコピーボタン
+  document.getElementById('copyExportBtn').addEventListener('click', () => {
+    exportTextarea.select();
+    document.execCommand('copy');
+    alert('クリップボードにコピーしました！');
+  });
+  
+  // エクスポートモーダルの閉じるボタン
+  document.getElementById('closeExportBtn').addEventListener('click', () => {
+    exportModal.classList.remove('show');
+  });
+  
+  // インポートモーダルの読み込みボタン
+  document.getElementById('executeImportBtn').addEventListener('click', () => {
+    const jsonText = importTextarea.value.trim();
+    if (jsonText) {
+      const success = tableManager.importFromJson(jsonText);
+      if (success) {
+        importModal.classList.remove('show');
+        importTextarea.value = '';
+        alert('データを読み込みました！');
+      }
+    } else {
+      alert('JSONデータを入力してください。');
+    }
+  });
+  
+  // インポートモーダルのキャンセルボタン
+  document.getElementById('closeImportBtn').addEventListener('click', () => {
+    importModal.classList.remove('show');
+    importTextarea.value = '';
+  });
+  
+  // モーダル背景クリックで閉じる
+  exportModal.addEventListener('click', (e) => {
+    if (e.target === exportModal) {
+      exportModal.classList.remove('show');
+    }
+  });
+  
+  importModal.addEventListener('click', (e) => {
+    if (e.target === importModal) {
+      importModal.classList.remove('show');
+      importTextarea.value = '';
+    }
+  });
+}
+
+/**
+ * エクスポート処理
+ */
+function handleExport() {
+  const jsonData = tableManager.exportToJson();
+  const exportTextarea = document.getElementById('exportTextarea');
+  const exportModal = document.getElementById('exportModal');
+  
+  exportTextarea.value = jsonData;
+  exportModal.classList.add('show');
+}
+
+/**
+ * インポートダイアログを開く
+ */
+function handleImportOpen() {
+  const importModal = document.getElementById('importModal');
+  importModal.classList.add('show');
+  document.getElementById('importTextarea').focus();
 }
 
 /**

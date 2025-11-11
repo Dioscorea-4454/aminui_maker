@@ -51,6 +51,32 @@
     </div>
   </div>
 
+  <!-- エクスポートダイアログ -->
+  <div id="exportModal" class="modal">
+    <div class="modal-content">
+      <h3>データ出力（JSON形式）</h3>
+      <p>以下のテキストをコピーして保存してください。</p>
+      <textarea id="exportTextarea" readonly></textarea>
+      <div class="modal-buttons">
+        <button id="copyExportBtn" class="modal-btn primary-btn">📋 コピー</button>
+        <button id="closeExportBtn" class="modal-btn">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- インポートダイアログ -->
+  <div id="importModal" class="modal">
+    <div class="modal-content">
+      <h3>データ読み込み（JSON形式）</h3>
+      <p>保存したJSONテキストを貼り付けてください。</p>
+      <textarea id="importTextarea" placeholder="JSONデータを貼り付け..."></textarea>
+      <div class="modal-buttons">
+        <button id="executeImportBtn" class="modal-btn primary-btn">✓ 読み込み</button>
+        <button id="closeImportBtn" class="modal-btn">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScriptモジュールの読み込み -->
   <script src="modules/tableManager.js"></script>
   <script src="modules/pointCalculator.js"></script>

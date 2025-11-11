@@ -303,6 +303,11 @@ body {
 .generate-button-container {
   text-align: center;
   margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .generate-btn {
@@ -325,6 +330,156 @@ body {
 
 .generate-btn:active {
   transform: translateY(-1px);
+}
+
+/* 入出力ボタン */
+.io-btn {
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: white;
+}
+
+.export-btn {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+}
+
+.export-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6);
+}
+
+.import-btn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+}
+
+.import-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+}
+
+/* モーダルダイアログ */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s;
+}
+
+.modal.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 0.5rem;
+}
+
+.modal-content p {
+  margin: 0 0 1rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 200px;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: #f8f9fa;
+}
+
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: #fff;
+}
+
+.modal-content textarea[readonly] {
+  background-color: #f0f2f5;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-btn {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-btn.primary-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.modal-btn.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.modal-btn:not(.primary-btn) {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.modal-btn:not(.primary-btn):hover {
+  background-color: #d0d0d0;
 }
 
 #view-controls {

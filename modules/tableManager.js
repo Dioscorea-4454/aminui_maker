@@ -253,9 +253,11 @@ class TableManager {
     
     html += '</table>';
     
-    // 生成ボタンを追加
+    // 生成ボタンとエクスポート/インポートボタンを追加
     html += '<div class="generate-button-container">';
     html += '<button id="generateBtn" class="generate-btn">🎯 点群を生成</button>';
+    html += '<button id="exportBtn" class="io-btn export-btn">📤 出力</button>';
+    html += '<button id="importBtn" class="io-btn import-btn">📥 読み込み</button>';
     html += '</div>';
     
     this.container.innerHTML = html;
@@ -321,5 +323,72 @@ class TableManager {
    */
   validate() {
     return this.tableData.length > 0 && this.tableData.every(v => Number.isInteger(v) && v >= 1);
+  }
+
+  /**
+   * 表データをJSON形式で出力
+   * @returns {string} - JSON文字列
+   */
+  exportToJson() {
+    const exportData = {
+      version: "1.0",
+      timestamp: new Date().toISOString(),
+      baseNumber: this.baseNumber,
+      currentValue: this.currentValue,
+      isBaseSet: this.isBaseSet,
+      tableData: this.tableData
+    };
+    return JSON.stringify(exportData, null, 2);
+  }
+
+  /**
+   * JSON形式のデータから表を復元
+   * @param {string} jsonString - JSON文字列
+   * @returns {boolean} - 成功/失敗
+   */
+  importFromJson(jsonString) {
+    try {
+      const importData = JSON.parse(jsonString);
+      
+      // バリデーション
+      if (!importData.tableData || !Array.isArray(importData.tableData)) {
+        throw new Error('無効なデータ形式です');
+      }
+      
+      if (importData.tableData.length === 0) {
+        throw new Error('データが空です');
+      }
+      
+      // データを復元
+      this.tableData = [...importData.tableData];
+      this.baseNumber = importData.baseNumber || importData.tableData[0];
+      this.currentValue = importData.currentValue || importData.tableData[importData.tableData.length - 1];
+      this.isBaseSet = importData.isBaseSet !== undefined ? importData.isBaseSet : true;
+      
+      // UIを更新
+      if (this.isBaseSet) {
+        document.getElementById('checkBtn').style.display = 'none';
+        document.getElementById('stayBtn').style.display = 'block';
+        document.getElementById('resumeBtn').disabled = false;
+      } else {
+        document.getElementById('checkBtn').style.display = 'block';
+        document.getElementById('stayBtn').style.display = 'none';
+        document.getElementById('resumeBtn').disabled = true;
+      }
+      
+      this.renderTable();
+      this.updateValueDisplay();
+      
+      // 変更を通知
+      if (this.changeCallback) {
+        this.changeCallback(this.tableData);
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('JSON読み込みエラー:', error);
+      alert(`データの読み込みに失敗しました:\n${error.message}`);
+      return false;
+    }
   }
 }
