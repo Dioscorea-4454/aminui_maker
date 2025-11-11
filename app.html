@@ -2,20 +2,22 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>3D形状生成アプリ</title>
   <link rel="stylesheet" href="app.css">
 </head>
 <body>
   <!-- 
     メインアプリケーションHTML
-    - 画面を上下2分割
-    - 上半分: 2行の表入力エリア
-    - 下半分: 3D形状表示エリア
+    - 縦スクロール型レイアウト
+    - 上部: 2行の表入力エリア
+    - 下部: 2D点群・3D形状表示エリア
   -->
   
   <div id="app-container">
-    <!-- 上半分: 入力エリア -->
+    <!-- 入力エリア -->
     <div id="input-section" class="section">
       <h2>データ入力</h2>
       <div id="table-controls">
@@ -26,7 +28,7 @@
       </div>
     </div>
 
-    <!-- 下半分: 表示エリア -->
+    <!-- 表示エリア -->
     <div id="display-section" class="section">
       <div class="display-grid">
         <!-- 左側: 2D点群表示 -->
@@ -40,7 +42,8 @@
           <h3>3D形状</h3>
           <canvas id="canvas3d" width="600" height="500"></canvas>
           <div class="control-hint">
-            🖱️ ドラッグ: 回転 | ホイール: ズーム
+            <span class="desktop-hint">🖱️ ドラッグ: 回転 | ホイール: ズーム</span>
+            <span class="mobile-hint">👆 1本指: 回転 | 2本指: ズーム</span>
           </div>
         </div>
       </div>

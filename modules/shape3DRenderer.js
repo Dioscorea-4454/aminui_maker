@@ -53,6 +53,10 @@ class Shape3DRenderer {
    * イベントリスナーの登録
    */
   attachEventListeners() {
+    // タッチ操作用の変数
+    this.touches = [];
+    this.lastTouchDistance = 0;
+    
     // マウスドラッグで回転
     this.canvas.addEventListener('mousedown', (e) => {
       this.isDragging = true;
@@ -87,6 +91,85 @@ class Shape3DRenderer {
       this.zoom *= (1 - e.deltaY * 0.001);
       this.zoom = Math.max(0.1, Math.min(5, this.zoom));
     });
+    
+    // タッチ操作対応
+    this.canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.touches = Array.from(e.touches);
+      
+      if (this.touches.length === 1) {
+        // 1本指: 回転
+        this.isDragging = true;
+        this.lastMouseX = this.touches[0].clientX;
+        this.lastMouseY = this.touches[0].clientY;
+      } else if (this.touches.length === 2) {
+        // 2本指: ズーム
+        this.isDragging = false;
+        this.lastTouchDistance = this.getTouchDistance();
+      }
+    }, { passive: false });
+    
+    this.canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      this.touches = Array.from(e.touches);
+      
+      if (this.touches.length === 1 && this.isDragging) {
+        // 1本指: 回転
+        const deltaX = this.touches[0].clientX - this.lastMouseX;
+        const deltaY = this.touches[0].clientY - this.lastMouseY;
+        
+        this.rotation.y += deltaX * 0.01;
+        this.rotation.x += deltaY * 0.01;
+        
+        this.lastMouseX = this.touches[0].clientX;
+        this.lastMouseY = this.touches[0].clientY;
+      } else if (this.touches.length === 2) {
+        // 2本指: ピンチズーム
+        const currentDistance = this.getTouchDistance();
+        const delta = currentDistance - this.lastTouchDistance;
+        
+        this.zoom *= (1 + delta * 0.01);
+        this.zoom = Math.max(0.1, Math.min(5, this.zoom));
+        
+        this.lastTouchDistance = currentDistance;
+      }
+    }, { passive: false });
+    
+    this.canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.touches = Array.from(e.touches);
+      
+      if (this.touches.length === 0) {
+        this.isDragging = false;
+        this.lastTouchDistance = 0;
+      } else if (this.touches.length === 1) {
+        // 2本指から1本指に変わった場合
+        this.isDragging = true;
+        this.lastMouseX = this.touches[0].clientX;
+        this.lastMouseY = this.touches[0].clientY;
+        this.lastTouchDistance = 0;
+      }
+    }, { passive: false });
+    
+    this.canvas.addEventListener('touchcancel', (e) => {
+      e.preventDefault();
+      this.isDragging = false;
+      this.touches = [];
+      this.lastTouchDistance = 0;
+    }, { passive: false });
+  }
+  
+  /**
+   * 2つのタッチポイント間の距離を計算
+   * @returns {number} - 距離
+   */
+  getTouchDistance() {
+    if (this.touches.length < 2) return 0;
+    
+    const dx = this.touches[0].clientX - this.touches[1].clientX;
+    const dy = this.touches[0].clientY - this.touches[1].clientY;
+    
+    return Math.sqrt(dx * dx + dy * dy);
   }
 
   /**
