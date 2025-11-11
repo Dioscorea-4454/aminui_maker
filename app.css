@@ -114,10 +114,10 @@ body {
 #table-container {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column; /* 縦並びに変更 */
+  align-items: center; /* 中央揃え */
   padding: 1rem;
-  overflow-x: auto;
+  overflow-x: visible;
   -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
 }
 
@@ -328,13 +328,17 @@ body {
 
 /* 表ラッパー（横スクロール用） */
 .table-wrapper {
+  width: 100%; /* 幅を100%に */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: center; /* 中央揃え */
 }
 
 /* 生成ボタンコンテナ */
 .generate-button-container {
+  width: 100%; /* 幅を100%に */
   text-align: center;
   margin-top: 1rem;
   padding: 0 1rem;
